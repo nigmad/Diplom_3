@@ -1,0 +1,6 @@
+pip~=24.2
+attrs~=24.2.0
+PySocks~=1.7.1
+cryptography~=44.0.0
+Faker~=33.1.0
+selenium~=4.27.1
