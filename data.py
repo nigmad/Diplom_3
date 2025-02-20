@@ -34,3 +34,4 @@ class MethodsForApi:
 
     def delete_user(self, token):
         return requests.delete(f'{Url.MAIN_SITE_URL}{Url.DELETE_USER}', headers={"Authorization": f"{token}"})
+

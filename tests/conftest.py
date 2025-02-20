@@ -1,32 +1,36 @@
+import time
+
 import pytest
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from curl import Url
-from data import DataForUser, MethodsForApi, register_new_user
-from pages.create_order_page import CreateOrderPage
+from data import MethodsForApi, register_new_user
 from pages.login_page import LoginPage
 from pages.main_page import MainPage
+from pages.order_feed_page import OrderFeedPage
 from pages.password_recovery_page import PasswordRecoveryPage
-from pages.personal_account_page import PersonalAccountPage
 
 
-# Параметризация для двух браузеров (Chrome и Firefox)
-@pytest.fixture(scope="function", params=["chrome", "firefox"])
+
+@pytest.fixture(scope="session", params=["chrome", "firefox"])
 def driver(request):
     if request.param == "chrome":
         # Настройки для Chrome
         options = Options()
-        options.add_argument("--window-size=1200,600")
+        options.add_argument("--start-maximized")
         service = Service("/Users/diananigma/Downloads/WebDriver/bin/chromedriver")
-        driver = webdriver.Chrome(options=options, service=service)
+        driver = webdriver.Chrome()
+        driver.set_window_size(1920, 1080)
         driver.get(Url.MAIN_SITE_URL)
     elif request.param == "firefox":
         # Настройки для Firefox
         options = FirefoxOptions()
-        options.add_argument("--window-size=1200,600")
-        driver = webdriver.Firefox(options=options)
+        options.add_argument("--start-maximized")
+        service = Service("/Users/diananigma/Downloads/WebDriver/bin/geckodriver")
+        driver = webdriver.Firefox()
+        driver.set_window_size(1920, 1080)
         driver.get(Url.MAIN_SITE_URL)
 
     yield driver
@@ -47,7 +51,7 @@ def generate_registered_user():
 
 
 @pytest.fixture
-def login_fixture(generate_registered_user):
+def generate_user_fixture(driver, generate_registered_user):
     user_data = generate_registered_user
     response = MethodsForApi().register_user(user_data)
     assert response.status_code == 200
@@ -61,9 +65,8 @@ def login_fixture(generate_registered_user):
 
 
 @pytest.fixture
-def login_and_go_to_personal_account(driver, generate_registered_user):
+def login_fixture(driver, generate_registered_user):
     user_data = generate_registered_user
-
     response = MethodsForApi().register_user(user_data)
     assert response.status_code == 200
     assert response.json().get("success") is True
@@ -74,21 +77,19 @@ def login_and_go_to_personal_account(driver, generate_registered_user):
 
     main_page = MainPage(driver)
     main_page.click_on_personal_account()
+    main_page.main_page_loading_wait()
     login_page = LoginPage(driver)
+    login_page.login_page_loading_wait()
     login_page.fill_login_data_form(user_data)
-    login_page.click_on_login_button()
+    login_page.put_cursor_and_click_on_login_button()
     login_page.wait_overlay_to_disappear_login()
 
-    main_page.wait_overlay_to_disappear_main()
+    main_page = MainPage(driver)
+    main_page.main_page_loading_wait()
     main_page.wait_for_personal_account_button()
-    main_page.click_on_personal_account()
-    personal_page = PersonalAccountPage(driver)
-    personal_page.wait_overlay_to_disappear_personal()
+    main_page.click_on_constructor()
 
-    return personal_page
-
-
-
+    yield MainPage(driver)
 
 
 @pytest.fixture
@@ -98,29 +99,109 @@ def open_password_recovery_page(driver):
     return password_recovery_page
 
 
+@pytest.fixture
+def login_and_place_order_fixture(driver, login_fixture):
+    main_page = login_fixture
+
+    main_page = MainPage(driver)
+    main_page.main_page_loading_wait()
+    main_page.scroll_to_ingredient()
+    main_page.wait_for_ingredient()
+
+    main_page.get_counter_on_ingredient()
+    main_page.bun_drag_and_drop()
+    main_page.main_page_loading_wait()
+    time.sleep(1)
+    main_page.scroll_to_place_order_button()
+    main_page.click_on_place_order_button()
+    time.sleep(2)
+    main_page.main_page_loading_wait()
+    main_page.wait_for_placed_order_window()
+    main_page.main_page_loading_wait()
+
+    order_number = main_page.find_created_order_number()
+    print(f'order number: {order_number}')
+
+    return order_number
+
 
 @pytest.fixture
-def login_and_place_order_fixture(driver, login_and_go_to_personal_account):
-    personal_page = login_and_go_to_personal_account
-    personal_page.click_on_constructor_from_personal_account()
-    personal_page.wait_overlay_to_disappear_personal()
+def registered_user_placed_order(driver, login_and_place_order_fixture):
+    order_number = login_and_place_order_fixture
+    main_page = MainPage(driver)
+    main_page.main_page_loading_wait()
+    main_page.scroll_to_close_order_button()
+    main_page.put_cursor_and_click_on_close_order_window()
+    time.sleep(2)
 
-    create_order_page = CreateOrderPage(driver)
-    create_order_page.wait_overlay_to_disappear_order()
-    create_order_page.scroll_to_ingredient()
-    create_order_page.wait_for_ingredient()
+    main_page.main_page_loading_wait()
+    print(f'order number: {order_number}')
 
-    create_order_page.get_counter_on_ingredient()
-    create_order_page.bun_drag_and_drop()
-    create_order_page.wait_overlay_to_disappear_order()
+    return order_number
 
-    create_order_page.scroll_to_place_order_button()
-    create_order_page.click_on_place_order_button()
-    create_order_page.wait_overlay_to_disappear_order()
-    create_order_page.wait_for_placed_order_window()
-    create_order_page.wait_overlay_to_disappear_order()
+@pytest.fixture
+def get_amount_of_orders_before_new_order(driver):
+    main_page = MainPage(driver)
+    main_page.click_on_order_feed()
+    main_page.main_page_loading_wait()
 
-    order_confirmation = create_order_page.find_order_number()
-    return order_confirmation
+    order_feed_page = OrderFeedPage(driver)
+    order_feed_page.order_feed_page_loading_wait()
+    order_feed_page.wait_for_order_details_window()
+    counter_before = order_feed_page.find_counter_in_orders_done_all_time()
+
+    return counter_before
+
+@pytest.fixture
+def get_all_time_count_before_and_place_order(driver, get_amount_of_orders_before_new_order, login_and_place_order_fixture):
+    counter_before = get_amount_of_orders_before_new_order
+    print(f"Orders before new order: {counter_before}")
+
+    order_number = login_and_place_order_fixture
+    main_page = MainPage(driver)
+    main_page.main_page_loading_wait()
+    main_page.scroll_to_close_order_button()
+    main_page.put_cursor_and_click_on_close_order_window()
+    time.sleep(2)
+
+    main_page.main_page_loading_wait()
+    print(f'order number: {order_number}')
+
+    return order_number, counter_before
 
 
+
+
+
+@pytest.fixture
+def get_today_amount_of_orders_before_new_order(driver):
+    main_page = MainPage(driver)
+    main_page.click_on_order_feed()
+    main_page.main_page_loading_wait()
+
+    order_feed_page = OrderFeedPage(driver)
+    order_feed_page.order_feed_page_loading_wait()
+    order_feed_page.wait_for_order_details_window()
+    order_feed_page.scroll_to_orders_done_today()
+    counter_before = order_feed_page.find_counter_in_orders_done_today()
+
+    return counter_before
+
+
+
+@pytest.fixture
+def get_today_count_before_and_place_order(driver, get_today_amount_of_orders_before_new_order, login_and_place_order_fixture):
+    counter_before = get_today_amount_of_orders_before_new_order
+    print(f"Orders today before new order: {counter_before}")
+
+    order_number = login_and_place_order_fixture
+    main_page = MainPage(driver)
+    main_page.main_page_loading_wait()
+    main_page.scroll_to_close_order_button()
+    main_page.put_cursor_and_click_on_close_order_window()
+    time.sleep(2)
+
+    main_page.main_page_loading_wait()
+    print(f'order number: {order_number}')
+
+    return order_number, counter_before

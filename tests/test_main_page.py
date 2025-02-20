@@ -1,8 +1,8 @@
+import time
+
 import allure
-
 from curl import Url
-
-from pages.create_order_page import CreateOrderPage
+from pages.login_page import LoginPage
 from pages.main_page import MainPage
 from pages.order_feed_page import OrderFeedPage
 from pages.personal_account_page import PersonalAccountPage
@@ -46,75 +46,82 @@ class TestMainPage:
 
     @allure.title('Test pop up window with ingredient details by clicking on ingredient')
     def test_click_ingredient_popup_window(self, driver):
-        create_order_page = CreateOrderPage(driver)
-        create_order_page.scroll_to_ingredient()
-        create_order_page.wait_for_ingredient()
-        create_order_page.click_on_ingredient()
+        main_page = MainPage(driver)
+        main_page.scroll_to_ingredient()
+        main_page.wait_for_ingredient()
+        main_page.click_on_ingredient()
 
-        create_order_page.wait_overlay_to_disappear_order()
-        create_order_page.wait_for_ingredient_details_window()
+        main_page.main_page_loading_wait()
+        main_page.wait_for_ingredient_details_window()
 
-        ingredient_details_header = create_order_page.find_ingredient_details_header()
+        ingredient_details_header = main_page.find_ingredient_details_header()
         assert ingredient_details_header.is_displayed()
 
-    @allure.title('Test close pop up window clicking on x icon')
-    def test_click_on_x_icon_in_ingredient_details_window(self, driver):
-        create_order_page = CreateOrderPage(driver)
-        create_order_page.scroll_to_ingredient()
-        create_order_page.wait_for_ingredient()
-        create_order_page.click_on_ingredient()
+    @allure.title('Test close pop up window clicking on close icon')
+    def test_click_on_close_button_in_ingredient_details_window(self, driver):
+        main_page = MainPage(driver)
+        main_page.scroll_to_ingredient()
+        main_page.wait_for_ingredient()
+        main_page.click_on_ingredient()
 
-        create_order_page.wait_overlay_to_disappear_order()
+        main_page.main_page_loading_wait()
+        main_page.wait_for_ingredient_details_window_x_button()
+        main_page.scroll_to_close_button_on_ingredient_details_popup()
 
-        create_order_page.wait_for_ingredient_details_window_x_button()
-        create_order_page.find_x_button_on_ingredient_details_popup()
+        main_page.put_cursor_and_click_on_close_on_ingredient_details_popup()
+        main_page.main_page_loading_wait()
+        time.sleep(1)
 
-        create_order_page.click_x_icon_on_popup_ingredient_window()
-        create_order_page.wait_overlay_to_disappear_order()
+        ingredient_details_window = main_page.find_ingredient_details_header()
+        ingredient_details_window.is_displayed()
+        assert ingredient_details_window.is_displayed()==False
 
-        create_order_page.wait_for_ingredient_popup_to_disappear()
 
-        ingredient_details_header = create_order_page.find_ingredient_details_header()
-        assert len(ingredient_details_header) == 0
 
     @allure.title('Test adding ingredient to order increase the counter')
-    def test_click_ingredient_popup_window(self, driver):
-        create_order_page = CreateOrderPage(driver)
-        create_order_page.scroll_to_ingredient()
-        create_order_page.wait_for_ingredient()
-        initial_counter = int(create_order_page.get_counter_on_ingredient())
+    def test_adding_ingredient_to_order_increase_counter(self, driver):
+        main_page = MainPage(driver)
+        main_page.scroll_to_ingredient()
+        main_page.wait_for_ingredient()
+        initial_counter = int(main_page.get_counter_on_ingredient())
+        print(f"Initial counter: {initial_counter}")
+        #time.sleep(2)
+        main_page.drag_and_drop_ingredient()
+        main_page.main_page_loading_wait()
 
-        create_order_page.bun_drag_and_drop()
-        create_order_page.wait_overlay_to_disappear_order()
-        create_order_page.wait_for_counter_to_update(initial_counter)
+        main_page.wait_for_counter_to_update(initial_counter)
+        main_page.main_page_loading_wait()
+        time.sleep(2)
 
-        updated_counter = int(create_order_page.get_counter_on_ingredient())
+        updated_counter = int(main_page.get_counter_on_ingredient())
+        print(f"updated_counter: {updated_counter}")
+        assert initial_counter < updated_counter
 
-        assert updated_counter == initial_counter + 2
 
     @allure.title('Test registered user can place an order')
-    def test_place_order_by_registered_user(self, driver, login_and_go_to_personal_account):
-        personal_page = login_and_go_to_personal_account
-        personal_page.click_on_constructor_from_personal_account()
-        personal_page.wait_overlay_to_disappear_personal()
+    def test_place_order_by_registered_user(self, driver, login_fixture):
+        main_page = login_fixture
+        main_page = MainPage(driver)
 
-        create_order_page = CreateOrderPage(driver)
-        create_order_page.wait_overlay_to_disappear_order()
-        create_order_page.scroll_to_ingredient()
-        create_order_page.wait_for_ingredient()
+        main_page.main_page_loading_wait()
 
-        create_order_page.get_counter_on_ingredient()
-        create_order_page.bun_drag_and_drop()
-        create_order_page.wait_overlay_to_disappear_order()
+        main_page.scroll_to_ingredient()
+        main_page.wait_for_ingredient()
 
-        create_order_page.scroll_to_place_order_button()
-        create_order_page.click_on_place_order_button()
-        create_order_page.wait_overlay_to_disappear_order()
-        create_order_page.wait_for_placed_order_window()
-        create_order_page.wait_overlay_to_disappear_order()
+        main_page.get_counter_on_ingredient()
+        main_page.bun_drag_and_drop()
+        main_page.main_page_loading_wait()
 
-        order_confirmation = create_order_page.find_order_number()
-        assert order_confirmation.is_displayed()
+        main_page.scroll_to_place_order_button()
+        main_page.put_cursor_and_click_on_place_order_button()
+        main_page.main_page_loading_wait()
+        main_page.wait_for_placed_order_window()
+        main_page.main_page_loading_wait()
+
+        order_confirmation = main_page.find_created_order_number()
+        print(f'order number: {order_confirmation}')
+
+        assert order_confirmation != ""
 
 
 

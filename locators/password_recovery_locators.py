@@ -17,7 +17,13 @@ class PasswordRecoveryLocators:
     HIDE_UNHIDE_PASSWORD_ICON = (By.XPATH, ".//div[contains(@class, 'input__icon input__icon-action')]")
     OVERLAY = (By.XPATH, ".//div[contains(@class, 'Modal_modal_overlay__x2ZCr')]/parent::div")
 
-    PASWORD_FIELD_HIGHLIGHTED = (By.CSS_SELECTOR, "label.input__placeholder.input__placeholder-focused")
+    PASSWORD_FIELD_HIGHLIGHTED = (By.CSS_SELECTOR, "div.input.input_status_active")
+
+
+
+
+
+
 
 
 

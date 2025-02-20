@@ -8,6 +8,10 @@ from pages.base_page import BasePage
 
 class LoginPage(BasePage):
 
+    @allure.step('Дождаться загрузки страницы')
+    def login_page_loading_wait(self):
+        self.wait_for_element_hide(LoginPageLocators.OVERLAY)
+
     @allure.step('Подождать заголовка Вход')
     def wait_for_enter_header(self):
         self.wait_for_element(LoginPageLocators.ENTER_HEADER)
@@ -20,6 +24,10 @@ class LoginPage(BasePage):
     @allure.step('Кликнуть на кнопку Войти')
     def click_on_login_button(self):
         self.click_on_element(LoginPageLocators.LOGIN_BUTTON)
+
+    @allure.step('Навести курсор на элемент и кликнуть')
+    def put_cursor_and_click_on_login_button(self):
+        self.put_cursor_and_click_on_element(LoginPageLocators.LOGIN_BUTTON)
 
     @allure.step('Подождать исчезновение оверлэй')
     def wait_overlay_to_disappear_login(self):

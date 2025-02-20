@@ -1,3 +1,5 @@
+import time
+
 import allure
 
 from curl import Url
@@ -28,7 +30,7 @@ class TestPasswordRecovery:
         password_recovery_page.wait_for_password_recovery_header()
         password_recovery_page.send_keys_to_input(PasswordRecoveryLocators.EMAIL_FIELD, DataForUser.EMAIL)
         password_recovery_page.click_on_recovery_button()
-        password_recovery_page.wait_overlay_to_disappear_password()
+        password_recovery_page.password_page_loading_wait()
         password_recovery_page.wait_for_password_field()
 
         assert Url.RESET_PASSWORD_URL in password_recovery_page.get_current_url()
@@ -41,14 +43,15 @@ class TestPasswordRecovery:
         password_recovery_page.send_keys_to_input(PasswordRecoveryLocators.EMAIL_FIELD, DataForUser.EMAIL)
 
         password_recovery_page.click_on_recovery_button()
-        password_recovery_page.wait_overlay_to_disappear_password()
+        password_recovery_page.password_page_loading_wait()
         password_recovery_page.wait_for_password_field()
 
-
         password_recovery_page.click_on_overlaid_element(PasswordRecoveryLocators.HIDE_UNHIDE_PASSWORD_ICON)
-        password_recovery_page.wait_for_password_field_highlighted()
 
-        assert PasswordRecoveryLocators.PASWORD_FIELD_HIGHLIGHTED.is_displayed()
+        password_recovery_page.wait_for_password_field_highlighted()
+        time.sleep(1)
+        highlighted_field = password_recovery_page.find_password_highlighted_field()
+        assert highlighted_field.is_displayed()
 
 
 
