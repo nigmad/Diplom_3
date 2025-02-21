@@ -1,4 +1,4 @@
-pip~=24.2
+pip~=25.0
 allure-python-commons~=2.13.5
 selenium~=4.27.1
 seletools~=1.5.0

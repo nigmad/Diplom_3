@@ -1,0 +1,3 @@
+Initial counter: 0
+Initial counter: 0
+updated_counter: 2
