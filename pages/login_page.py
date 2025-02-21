@@ -1,5 +1,4 @@
 import allure
-
 from locators.login_page_locators import LoginPageLocators
 from pages.base_page import BasePage
 
@@ -29,9 +28,7 @@ class LoginPage(BasePage):
     def put_cursor_and_click_on_login_button(self):
         self.put_cursor_and_click_on_element(LoginPageLocators.LOGIN_BUTTON)
 
-    @allure.step('Подождать исчезновение оверлэй')
-    def wait_overlay_to_disappear_login(self):
-        self.wait_for_overlay_to_disappear(LoginPageLocators.OVERLAY)
+
 
 
 

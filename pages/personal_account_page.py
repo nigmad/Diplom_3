@@ -1,7 +1,9 @@
 import allure
-
 from locators.personal_account_locators import PersonalAccountLocators
 from pages.base_page import BasePage
+
+
+
 
 class PersonalAccountPage(BasePage):
 
@@ -38,9 +40,6 @@ class PersonalAccountPage(BasePage):
         self.click_on_overlaid_element(PersonalAccountLocators.EXIT_BUTTON)
 
 
-    @allure.step('Подождать исчезновение оверлэй')
-    def wait_overlay_to_disappear_personal(self):
-        self.wait_for_overlay_to_disappear(PersonalAccountLocators.OVERLAY, timeout=30)
 
     @allure.step('Кликнуть на Конструктор')
     def click_on_constructor_from_personal_account(self):

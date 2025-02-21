@@ -1,5 +1,4 @@
 import time
-
 import pytest
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
@@ -19,7 +18,6 @@ def driver(request):
     if request.param == "chrome":
         # Настройки для Chrome
         options = Options()
-        options.add_argument("--start-maximized")
         service = Service("/Users/diananigma/Downloads/WebDriver/bin/chromedriver")
         driver = webdriver.Chrome()
         driver.set_window_size(1920, 1080)
@@ -27,7 +25,6 @@ def driver(request):
     elif request.param == "firefox":
         # Настройки для Firefox
         options = FirefoxOptions()
-        options.add_argument("--start-maximized")
         service = Service("/Users/diananigma/Downloads/WebDriver/bin/geckodriver")
         driver = webdriver.Firefox()
         driver.set_window_size(1920, 1080)
@@ -82,7 +79,7 @@ def login_fixture(driver, generate_registered_user):
     login_page.login_page_loading_wait()
     login_page.fill_login_data_form(user_data)
     login_page.put_cursor_and_click_on_login_button()
-    login_page.wait_overlay_to_disappear_login()
+    login_page.login_page_loading_wait()
 
     main_page = MainPage(driver)
     main_page.main_page_loading_wait()
@@ -90,6 +87,12 @@ def login_fixture(driver, generate_registered_user):
     main_page.click_on_constructor()
 
     yield MainPage(driver)
+
+    login_response = MethodsForApi().login_user(user_data)
+    token = login_response.json().get("accessToken")
+    print(f"Generated Token: {token}")
+    delete_response = MethodsForApi().delete_user(token)
+    assert delete_response.status_code == 202
 
 
 @pytest.fixture

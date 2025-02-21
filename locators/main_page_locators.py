@@ -22,7 +22,7 @@ class MainPageLocators:
 
     PLACE_ORDER_BUTTON = (By.XPATH, "//button[contains(@class, 'button_button_type_primary__1O7Bx') and text()='Оформить заказ']")
 
-    DROP_N_DRAG_BUN_HERE_PLACE = (By.XPATH, "//ul[contains(@class, 'BurgerConstructor_basket__list__')]")
+    BASKET = (By.XPATH, "//ul[contains(@class, 'BurgerConstructor_basket__list__')]")
     INGREDIENT_COUNTER = (By.XPATH, "//p[@class='counter_counter__num__3nue1']")
 
     BUN_INGREDIENT_1 = (By.XPATH, "//*[contains(@alt, 'Флюоресцентная булка R2-D3')]")

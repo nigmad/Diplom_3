@@ -1,6 +1,5 @@
 import allure
 from selenium.common import NoSuchElementException
-
 from locators.order_feed_locators import OrderFeedLocators
 from pages.base_page import BasePage
 
@@ -36,7 +35,7 @@ class OrderFeedPage(BasePage):
             return self.driver.find_element(*OrderFeedLocators.ORDER_DETAILS_WINDOW_COMPOUND_LIST)
         except NoSuchElementException:
 
-            raise AssertionError("Close button in details window not found")
+            raise AssertionError("not found")
 
 
     @allure.step('Найти номер заказа в окне В работе или Выполнено')
@@ -52,19 +51,6 @@ class OrderFeedPage(BasePage):
                 return order_number
             except NoSuchElementException:
                 raise AssertionError("Номер заказа не найден ни в окне 'В работе', ни в окне 'Выполнено'")
-
-
-    @allure.step('Найти номер заказа в окне В работе')
-    def find_order_number_in_work_window(self):
-        try:
-            return self.driver.find_element(*OrderFeedLocators.ORDER_NUMBER_IN_WORK_WINDOW)
-        except NoSuchElementException:
-
-            raise AssertionError("not found")
-
-    @allure.step('Взять номер заказа из окна в работе')
-    def get_order_number_in_work_window(self):
-        self.get_text_on_element(OrderFeedLocators.ORDER_NUMBER_IN_WORK_WINDOW)
 
 
 
@@ -87,10 +73,6 @@ class OrderFeedPage(BasePage):
     @allure.step('Скролл до Выполнено за сегодня')
     def scroll_to_orders_done_today(self):
         self.scroll_to_element(OrderFeedLocators.TODAY_ORDERS_DONE_COUNT)
-
-
-
-
 
 
     @allure.step('Подождать количество заказов в ленте из счетчика')

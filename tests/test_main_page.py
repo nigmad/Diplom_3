@@ -2,7 +2,6 @@ import time
 
 import allure
 from curl import Url
-from pages.login_page import LoginPage
 from pages.main_page import MainPage
 from pages.order_feed_page import OrderFeedPage
 from pages.personal_account_page import PersonalAccountPage
@@ -16,15 +15,15 @@ class TestMainPage:
         main_page = MainPage(driver)
         main_page.wait_for_personal_account_button()
         main_page.click_on_personal_account()
-        main_page.wait_overlay_to_disappear_main()
+        main_page.main_page_loading_wait()
 
         personal_account_page = PersonalAccountPage(driver)
-        personal_account_page.wait_overlay_to_disappear_personal()
+        personal_account_page.personal_page_loading_wait()
 
         main_page = MainPage(driver)
         main_page.wait_for_constructor_button()
         main_page.click_on_constructor()
-        main_page.wait_overlay_to_disappear_main()
+        main_page.main_page_loading_wait()
 
         assert Url.MAIN_SITE_URL in main_page.get_current_url()
 
@@ -35,10 +34,10 @@ class TestMainPage:
     def test_click_on_order_feed_button_redirect(self, driver):
         main_page = MainPage(driver)
         main_page.click_on_order_feed()
-        main_page.wait_overlay_to_disappear_main()
+        main_page.main_page_loading_wait()
 
         order_feed_page = OrderFeedPage(driver)
-        order_feed_page.wait_overlay_to_disappear_order_feed()
+        order_feed_page.order_feed_page_loading_wait()
 
         assert Url.ORDER_FEED_URL in order_feed_page.get_current_url()
 
@@ -85,8 +84,8 @@ class TestMainPage:
         main_page.wait_for_ingredient()
         initial_counter = int(main_page.get_counter_on_ingredient())
         print(f"Initial counter: {initial_counter}")
-        #time.sleep(2)
-        main_page.drag_and_drop_ingredient()
+
+        main_page.bun_drag_and_drop()
         main_page.main_page_loading_wait()
 
         main_page.wait_for_counter_to_update(initial_counter)

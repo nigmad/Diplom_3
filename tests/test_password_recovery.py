@@ -1,7 +1,5 @@
 import time
-
 import allure
-
 from curl import Url
 from data import DataForUser
 from locators.password_recovery_locators import PasswordRecoveryLocators
@@ -46,7 +44,7 @@ class TestPasswordRecovery:
         password_recovery_page.password_page_loading_wait()
         password_recovery_page.wait_for_password_field()
 
-        password_recovery_page.click_on_overlaid_element(PasswordRecoveryLocators.HIDE_UNHIDE_PASSWORD_ICON)
+        password_recovery_page.click_on_unhide_password_icon()
 
         password_recovery_page.wait_for_password_field_highlighted()
         time.sleep(1)

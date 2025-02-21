@@ -1,11 +1,9 @@
 import allure
 from curl import Url
-from locators.login_page_locators import LoginPageLocators
-from locators.personal_account_locators import PersonalAccountLocators
 from pages.login_page import LoginPage
 from pages.main_page import MainPage
 from pages.personal_account_page import PersonalAccountPage
-import time
+
 
 
 class TestPersonalAccount:
@@ -47,7 +45,7 @@ class TestPersonalAccount:
 
         personal_page.wait_for_order_history_button()
         personal_page.click_on_order_history_button()
-        personal_page.wait_overlay_to_disappear_personal()
+        personal_page.personal_page_loading_wait()
 
         assert Url.ORDER_HISTORY_URL in personal_page.get_current_url()
 

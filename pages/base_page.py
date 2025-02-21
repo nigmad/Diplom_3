@@ -1,11 +1,10 @@
 import allure
-from selenium.common import NoSuchElementException, TimeoutException
+from selenium.common import TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
-#from seletools.actions import drag_and_drop
-from selenium.webdriver.common.by import By
+from seletools.actions import drag_and_drop
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
+
 
 
 
@@ -16,28 +15,28 @@ class BasePage:
         self.driver = driver
 
     @allure.step('Подождать видимость элемента')
-    def wait_for_element(self, locator, timeout=30):
+    def wait_for_element(self, locator, timeout=10):
         return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
     @allure.step('Подождать пока элемент не станет невидимым')
     def wait_for_element_hide(self, locator):
-        WebDriverWait(self.driver, timeout=30).until(EC.invisibility_of_element_located(locator))
+        WebDriverWait(self.driver, timeout=10).until(EC.invisibility_of_element_located(locator))
 
         return self.driver.find_element(*locator)
 
 
     @allure.step('Скролл до элемента')
-    def scroll_to_element(self, locator, timeout=20):
+    def scroll_to_element(self, locator, timeout=10):
         element = self.wait_for_element(locator, timeout)
         self.driver.execute_script('arguments[0].scrollIntoView();', element)
 
     @allure.step('Кликнуть на элемент')
-    def click_on_element(self, locator, timeout=30):
+    def click_on_element(self, locator, timeout=10):
         element = self.wait_for_element(locator, timeout)
         element.click()
 
     @allure.step('Ввести текст в поле ввода')
-    def send_keys_to_input(self, locator, keys, timeout=20):
+    def send_keys_to_input(self, locator, keys, timeout=10):
         element = self.wait_for_element(locator, timeout)
         element.send_keys(keys)
 
@@ -53,17 +52,14 @@ class BasePage:
     def find_element(self, locator):
         try:
 
-            WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located(locator))
+            WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(locator))
             return self.driver.find_element(*locator)
         except TimeoutException:
-            print("Не удалось найти выделенное поле пароля")
             return None
 
     @allure.step('Получить текущую ссылку')
     def get_current_url(self):
         return self.driver.current_url
-
-
 
 
     @allure.step('Drop ingredient into basket')
@@ -76,14 +72,7 @@ class BasePage:
         target_element = self.find_element(target_locator)
         actions = ActionChains(self.driver)
         actions.drag_and_drop(source_element, target_element).perform()
-        #actions.click_and_hold(source_element).move_to_element(target_element).release().perform()
-        #actions.click_and_hold(source_element).pause(2).move_to_element(target_element).release(target_element).perform()
 
-
-
-    @allure.step('Подождать исчезновение оверлей')
-    def wait_for_overlay_to_disappear(self, locator, timeout=30):
-        WebDriverWait(self.driver, timeout).until( EC.invisibility_of_element_located(locator))
 
 
     @allure.step('Навести курсор на элемент и кликнуть')
@@ -96,19 +85,18 @@ class BasePage:
 
     @allure.step('Клик элементу за оверлей')
     def click_on_overlaid_element(self, locator):
-        WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable(locator))
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(locator))
         self.click_on_element(locator)
 
     @allure.step('Подождать исчезновение элемента')
-    def wait_for_element_to_disappear(self, locator, timeout=20):
+    def wait_for_element_to_disappear(self, locator, timeout=10):
         WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
 
 
     @allure.step('Подождать исчезновение оверлей')
-    def wait_for_element_not_visible(self, locator, timeout=20):
+    def wait_for_element_not_visible(self, locator, timeout=10):
         WebDriverWait(self.driver, timeout).until_not(EC.visibility_of_element_located(locator))
 
     @allure.step('Подождать, пока значение элемента обновится')
-    def wait_for_element_to_update(self, locator, initial_value, timeout=20):
-
+    def wait_for_element_to_update(self, locator, initial_value, timeout=10):
         WebDriverWait(self.driver, timeout).until(lambda driver: int(self.get_text_on_element(locator)) != initial_value)

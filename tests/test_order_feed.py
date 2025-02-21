@@ -1,7 +1,5 @@
 import time
-
 import allure
-
 from pages.main_page import MainPage
 from pages.order_feed_page import OrderFeedPage
 from pages.personal_account_page import PersonalAccountPage
@@ -43,20 +41,19 @@ class TestOrderFeedPage:
         main_page.main_page_loading_wait()
         main_page.scroll_to_close_order_button()
         main_page.put_cursor_and_click_on_close_order_window()
-        time.sleep(2)
+        time.sleep(1)
 
         main_page.main_page_loading_wait()
-
         main_page.wait_for_personal_account_button()
         main_page.click_on_personal_account()
-        time.sleep(2)
+        time.sleep(1)
 
         main_page.main_page_loading_wait()
         personal_account_page = PersonalAccountPage(driver)
-        personal_account_page.wait_overlay_to_disappear_personal()
+        personal_account_page.personal_page_loading_wait()
 
         personal_account_page.click_on_order_history_button()
-        personal_account_page.wait_overlay_to_disappear_personal()
+        personal_account_page.personal_page_loading_wait()
 
         personal_account_page.wait_for_oder_history_list()
         personal_account_page.find_order_number_from_history()

@@ -36,9 +36,6 @@ class PasswordRecoveryPage(BasePage):
     def click_on_recovery_button(self):
         self.click_on_element(PasswordRecoveryLocators.RECOVERY_BUTTON)
 
-    @allure.step('Подождать исчезновение оверлэй')
-    def wait_overlay_to_disappear_password(self):
-        self.wait_for_overlay_to_disappear(PasswordRecoveryLocators.OVERLAY)
 
     @allure.step('Найти подсвечивание поля пароля')
     def find_password_highlighted_field(self):
