@@ -1,2 +1,0 @@
-order number: 184740
-Generated Token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjhiZDBjOWVkMjgwMDAxYjU4MDVhYSIsImlhdCI6MTc0MDE2MDI3NCwiZXhwIjoxNzQwMTYxNDc0fQ.zehKNGOZ__n0fyq9aMLBjxxKlmz-2XqUBnAURPjzznw
