@@ -10,6 +10,7 @@ from pages.login_page import LoginPage
 from pages.main_page import MainPage
 from pages.order_feed_page import OrderFeedPage
 from pages.password_recovery_page import PasswordRecoveryPage
+from webdriver_manager.firefox import GeckoDriverManager
 
 
 
@@ -26,9 +27,13 @@ def driver(request):
         # Настройки для Firefox
         options = FirefoxOptions()
         service = Service("/Users/diananigma/Downloads/WebDriver/bin/geckodriver")
-        driver = webdriver.Firefox()
+        driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
         driver.set_window_size(1920, 1080)
         driver.get(Url.MAIN_SITE_URL)
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference("dom.drop.enabled", True)
+        profile.set_preference("dom.dragging.enabled", True)
+        options.headless = False
 
     yield driver
     driver.quit()

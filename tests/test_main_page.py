@@ -85,8 +85,10 @@ class TestMainPage:
         initial_counter = int(main_page.get_counter_on_ingredient())
         print(f"Initial counter: {initial_counter}")
 
+
         main_page.bun_drag_and_drop()
         main_page.main_page_loading_wait()
+
 
         main_page.wait_for_counter_to_update(initial_counter)
         main_page.main_page_loading_wait()
