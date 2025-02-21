@@ -1,3 +1,4 @@
+
 import allure
 from selenium.common import TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -70,8 +71,28 @@ class BasePage:
     def drag_and_drop(self, source_locator, target_locator):
         source_element = self.find_element(source_locator)
         target_element = self.find_element(target_locator)
-        actions = ActionChains(self.driver)
-        actions.drag_and_drop(source_element, target_element).perform()
+
+
+        script = """
+            var source = arguments[0];
+            var target = arguments[1];
+
+            // Создаем и инициируем dragstart
+            var dragStartEvent = new Event('dragstart', { bubbles: true, cancelable: true });
+            source.dispatchEvent(dragStartEvent);
+
+            // Инициируем drop
+            var dropEvent = new Event('drop', { bubbles: true, cancelable: true });
+            target.dispatchEvent(dropEvent);
+
+            // Инициируем dragend
+            var dragEndEvent = new Event('dragend', { bubbles: true, cancelable: true });
+            source.dispatchEvent(dragEndEvent);
+            """
+
+        self.driver.execute_script(script, source_element, target_element)
+
+
 
 
 
