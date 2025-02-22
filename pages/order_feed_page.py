@@ -42,7 +42,7 @@ class OrderFeedPage(BasePage):
     def find_order_number_in_work_list(self):
         try:
             # Пытаемся найти номер заказа в окне "В работе"
-            order_number = self.driver.find_element(*OrderFeedLocators.ORDER_NUMBER_IN_WORK_WINDOW).text
+            order_number = self.driver.find_element(*OrderFeedLocators.ORDER_IN_WORK_LIST).text
             return order_number
         except NoSuchElementException:
             # Если не нашли в "В работе", пытаемся найти в окне "Выполнено"
