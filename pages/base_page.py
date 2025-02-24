@@ -16,13 +16,12 @@ class BasePage:
         self.driver = driver
 
     @allure.step('Подождать видимость элемента')
-    def wait_for_element(self, locator, timeout=10):
+    def wait_for_element(self, locator, timeout=20):
         return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
     @allure.step('Подождать пока элемент не станет невидимым')
     def wait_for_element_hide(self, locator):
         WebDriverWait(self.driver, timeout=10).until(EC.invisibility_of_element_located(locator))
-
         return self.driver.find_element(*locator)
 
 
@@ -47,16 +46,19 @@ class BasePage:
         return element.text
 
 
-
-
     @allure.step('Найти видимость элемента')
     def find_element(self, locator):
-        try:
+        element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(locator))
+        return element
 
-            WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(locator))
-            return self.driver.find_element(*locator)
+    @allure.step('Try to find element')
+    def try_to_find_element(self, locator):
+        try:
+            self.find_element(locator)
+            return True
         except TimeoutException:
-            return None
+            return False
+
 
     @allure.step('Получить текущую ссылку')
     def get_current_url(self):
@@ -71,7 +73,6 @@ class BasePage:
     def drag_and_drop(self, source_locator, target_locator):
         source_element = self.find_element(source_locator)
         target_element = self.find_element(target_locator)
-
 
         script = """
             var source = arguments[0];
@@ -94,14 +95,11 @@ class BasePage:
 
 
 
-
-
     @allure.step('Навести курсор на элемент и кликнуть')
     def put_cursor_and_click_on_element(self, locator):
         element = self.driver.find_element(*locator)
         actions = ActionChains(self.driver)
         actions.move_to_element(element).click().perform()
-
 
 
     @allure.step('Клик элементу за оверлей')
@@ -110,8 +108,12 @@ class BasePage:
         self.click_on_element(locator)
 
     @allure.step('Подождать исчезновение элемента')
-    def wait_for_element_to_disappear(self, locator, timeout=10):
-        WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
+    def wait_for_element_to_disappear(self, locator):
+        try:
+            WebDriverWait(self.driver, 5).until(EC.invisibility_of_element_located(locator))
+            return True
+        except TimeoutException:
+            return False
 
 
     @allure.step('Подождать исчезновение оверлей')

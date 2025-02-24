@@ -13,6 +13,7 @@ class PersonalAccountPage(BasePage):
 
     @allure.step('Подождать заголовка Профиль')
     def wait_for_profile_button(self):
+        self.personal_page_loading_wait()
         self.wait_for_element(PersonalAccountLocators.PROFILE_TEXT_BUTTON)
 
     @allure.step('Подождать кнопки История заказов')
@@ -21,7 +22,10 @@ class PersonalAccountPage(BasePage):
 
     @allure.step('Кликнуть на История заказов')
     def click_on_order_history_button(self):
+        self.personal_page_loading_wait()
+        self.wait_for_element(PersonalAccountLocators.ORDERS_HISTORY_BUTTON)
         self.click_on_overlaid_element(PersonalAccountLocators.ORDERS_HISTORY_BUTTON)
+        self.personal_page_loading_wait()
 
     @allure.step('Кликнуть на История заказов')
     def click_on_order_feed_button(self):
@@ -37,7 +41,10 @@ class PersonalAccountPage(BasePage):
 
     @allure.step('Кликнуть на кнопку Выйти')
     def click_on_exit_button(self):
-        self.click_on_overlaid_element(PersonalAccountLocators.EXIT_BUTTON)
+        self.personal_page_loading_wait()
+        self.wait_for_element(PersonalAccountLocators.EXIT_BUTTON)
+        self.put_cursor_and_click_on_element(PersonalAccountLocators.EXIT_BUTTON)
+        self.personal_page_loading_wait()
 
 
 
@@ -47,11 +54,15 @@ class PersonalAccountPage(BasePage):
 
     @allure.step('Найти номер заказа в всплывающем окне об успешном заказе')
     def find_order_number_from_history(self):
+        self.personal_page_loading_wait()
         return self.find_element(PersonalAccountLocators.ORDER_HISTORY_ORDER_NUMBER)
 
-    @allure.step('Взять номер заказа из истории заказов в ленте')
-    def get_order_number_from_order_feed_history(self):
+    @allure.step('Взять номер заказа')
+    def get_order_number_from_history(self):
+        self.personal_page_loading_wait()
         self.get_text_on_element(PersonalAccountLocators.ORDER_HISTORY_ORDER_NUMBER)
+
+
 
 
 

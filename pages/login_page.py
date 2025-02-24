@@ -11,22 +11,25 @@ class LoginPage(BasePage):
     def login_page_loading_wait(self):
         self.wait_for_element_hide(LoginPageLocators.OVERLAY)
 
-    @allure.step('Подождать заголовка Вход')
-    def wait_for_enter_header(self):
+
+    @allure.step('Найти заголовок Вход')
+    def find_enter_header(self):
+        self.login_page_loading_wait()
         self.wait_for_element(LoginPageLocators.ENTER_HEADER)
+        self.find_element(LoginPageLocators.ENTER_HEADER)
+
 
     @allure.step('Заполнить форму для логина')
     def fill_login_data_form(self, login_data):
+        self.login_page_loading_wait()
         self.send_keys_to_input(LoginPageLocators.EMAIL_FIELD, login_data['email'])
         self.send_keys_to_input(LoginPageLocators.PASSWORD_FIELD, login_data['password'])
 
-    @allure.step('Кликнуть на кнопку Войти')
-    def click_on_login_button(self):
-        self.click_on_element(LoginPageLocators.LOGIN_BUTTON)
 
     @allure.step('Навести курсор на элемент и кликнуть')
     def put_cursor_and_click_on_login_button(self):
         self.put_cursor_and_click_on_element(LoginPageLocators.LOGIN_BUTTON)
+        self.login_page_loading_wait()
 
 
 

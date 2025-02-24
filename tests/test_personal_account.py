@@ -11,12 +11,9 @@ class TestPersonalAccount:
     def test_personal_account_page_redirect_unauthorized_user(self, driver):
         main_page = MainPage(driver)
         main_page.click_on_personal_account()
-        main_page.main_page_loading_wait()
 
         login_page = LoginPage(driver)
-        login_page.login_page_loading_wait()
-        login_page.wait_for_enter_header()
-
+        login_page.find_enter_header()
         assert Url.LOGIN_URL in login_page.get_current_url()
 
     @allure.title('Test click on Personal Account button by registered user')
@@ -24,12 +21,9 @@ class TestPersonalAccount:
         login_data = login_fixture
         main_page = MainPage(driver)
         main_page.click_on_personal_account()
-        main_page.main_page_loading_wait()
 
         personal_page = PersonalAccountPage(driver)
-        personal_page.personal_page_loading_wait()
         personal_page.wait_for_profile_button()
-
         assert Url.PERSONAL_ACCOUNT_URL in personal_page.get_current_url()
 
 
@@ -38,14 +32,9 @@ class TestPersonalAccount:
         login_data = login_fixture
         main_page = MainPage(driver)
         main_page.click_on_personal_account()
-        main_page.main_page_loading_wait()
 
         personal_page = PersonalAccountPage(driver)
-        personal_page.personal_page_loading_wait()
-
-        personal_page.wait_for_order_history_button()
         personal_page.click_on_order_history_button()
-        personal_page.personal_page_loading_wait()
 
         assert Url.ORDER_HISTORY_URL in personal_page.get_current_url()
 
@@ -54,17 +43,12 @@ class TestPersonalAccount:
         login_data = login_fixture
         main_page = MainPage(driver)
         main_page.click_on_personal_account()
-        main_page.main_page_loading_wait()
 
         personal_page = PersonalAccountPage(driver)
-        personal_page.personal_page_loading_wait()
-
-        personal_page.wait_for_exit_button()
         personal_page.click_on_exit_button()
-        personal_page.personal_page_loading_wait()
 
         login_page = LoginPage(driver)
-        login_page.login_page_loading_wait()
+        login_page.find_enter_header()
 
         assert Url.LOGIN_URL in login_page.get_current_url()
 

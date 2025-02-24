@@ -1,5 +1,0 @@
-order number: 184986
-Orders today before new order: 612
-order number: 184986
-Orders after new order: 613
-Generated Token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjk5MzE4OWVkMjgwMDAxYjU4MGMyZCIsImlhdCI6MTc0MDIxNTA3MywiZXhwIjoxNzQwMjE2MjczfQ.n6by2DilfXGummR26vvORhtQTO7rkf_yDQmKK204EAQ

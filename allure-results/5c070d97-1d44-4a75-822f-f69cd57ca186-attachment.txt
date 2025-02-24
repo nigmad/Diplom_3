@@ -1,2 +1,0 @@
-order number: 184978
-Generated Token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjk5MTZiOWVkMjgwMDAxYjU4MGJmYyIsImlhdCI6MTc0MDIxNDY0NiwiZXhwIjoxNzQwMjE1ODQ2fQ.l2Obz040tk6qxpcszMQ25GUF4PRYVHSDhzftGt8UkEI

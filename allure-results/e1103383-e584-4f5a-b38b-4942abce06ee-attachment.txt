@@ -1,2 +1,0 @@
-order number: 184973
-Generated Token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjk5MGQxOWVkMjgwMDAxYjU4MGJkOCIsImlhdCI6MTc0MDIxNDQ4NiwiZXhwIjoxNzQwMjE1Njg2fQ.iyix_N4ZGlk-YVq1ExpiN-e1nuIaKcn3f22YXIC4Kz4

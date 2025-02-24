@@ -1,11 +1,11 @@
 class Url:
     MAIN_SITE_URL = 'https://stellarburgers.nomoreparties.site'
-    LOGIN_URL = 'https://stellarburgers.nomoreparties.site/login'
-    PERSONAL_ACCOUNT_URL = 'https://stellarburgers.nomoreparties.site/account/profile'
-    PASSWORD_RECOVERY_URL = 'https://stellarburgers.nomoreparties.site/forgot-password'
-    RESET_PASSWORD_URL = 'https://stellarburgers.nomoreparties.site/reset-password'
-    ORDER_FEED_URL = 'https://stellarburgers.nomoreparties.site/feed'
-    ORDER_HISTORY_URL = 'https://stellarburgers.nomoreparties.site/account/order-history'
+    LOGIN_URL = f'{MAIN_SITE_URL}/login'
+    PERSONAL_ACCOUNT_URL = f'{MAIN_SITE_URL}/account/profile'
+    PASSWORD_RECOVERY_URL = f'{MAIN_SITE_URL}/forgot-password'
+    RESET_PASSWORD_URL = f'{MAIN_SITE_URL}/reset-password'
+    ORDER_FEED_URL = f'{MAIN_SITE_URL}/feed'
+    ORDER_HISTORY_URL = f'{MAIN_SITE_URL}/account/order-history'
 
     CREATE_USER = '/api/auth/register'
     LOGIN_USER = '/api/auth/login'

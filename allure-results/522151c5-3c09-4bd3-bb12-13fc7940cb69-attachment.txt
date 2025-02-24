@@ -1,2 +1,0 @@
-order number: 184975
-Generated Token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjk5MTBlOWVkMjgwMDAxYjU4MGJlMiIsImlhdCI6MTc0MDIxNDU1MiwiZXhwIjoxNzQwMjE1NzUyfQ.IWrO4WyqFaJygfmXE9fI8V_DaiUalYljk3ppz1bP6rA
