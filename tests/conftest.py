@@ -143,3 +143,5 @@ def login_logout_fixture(driver, login_fixture):
     personal_page.click_on_exit_button()
     login_page = LoginPage(driver)
     login_page.find_enter_header()
+
+
