@@ -1,0 +1,7 @@
+pip~=25.0
+allure-python-commons~=2.13.5
+selenium~=4.27.1
+seletools~=1.5.0
+pytest~=8.3.3
+requests~=2.32.3
+Faker~=33.1.0
